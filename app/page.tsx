@@ -129,7 +129,7 @@ export default function Home() {
           <p className="eyebrow">
             <Sparkles size={15} /> Un detalle de cumpleaños
           </p>
-          <p className="hero__date">16 · 09 · 2026</p>
+          <p className="hero__date">17 · 09 · 2026</p>
           <h1 id="album-title">
             Kleberson <span>&amp;</span> Aleshna
           </h1>
@@ -271,7 +271,7 @@ export default function Home() {
             <br />
             reservada para ti.
           </h2>
-          <p>Porque tu cumpleaños merece algo más que un mensaje bonito.</p>
+          <p>Una celebración anticipada, un día antes de tu cumpleaños.</p>
           <Button
             type="button"
             size="lg"
@@ -292,15 +292,17 @@ export default function Home() {
         >
           <div className="reservation__card">
             <div className="reservation__copy">
-              <p className="reservation__overline">Confirmado para dos</p>
+              <p className="reservation__overline">
+                Celebración anticipada · Confirmado para dos
+              </p>
               <h3>
                 Una noche en
                 <br />
                 Museo Larco
               </h3>
               <p className="reservation__message">
-                Preparé esta noche pensando en ti, para celebrar tu cumpleaños y
-                seguir sumando recuerdos juntos.
+                Preparé esta noche pensando en ti: nos veremos el 16 para
+                celebrar juntos, un día antes de tu cumpleaños el 17.
               </p>
               <dl className="reservation__facts">
                 <div>
