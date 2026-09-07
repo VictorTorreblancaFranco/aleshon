@@ -291,26 +291,41 @@ export default function Home() {
           aria-hidden={!reservationOpen}
         >
           <div className="reservation__card">
-            <div className="reservation__copy">
+            <div className="reservation__topline">
+              <span className="reservation__monogram">K &amp; A</span>
+              <span>Invitación especial · 2026</span>
+            </div>
+
+            <div className="reservation__heading">
+              <span className="reservation__seal" aria-hidden="true">
+                <Sparkles size={22} />
+              </span>
               <p className="reservation__overline">
-                Celebración anticipada · Confirmado para dos
+                Kleberson invita a Aleshna
               </p>
               <h3>
-                Una noche en
+                Una noche para
                 <br />
-                Museo Larco
+                <em>celebrarte</em>
               </h3>
               <p className="reservation__message">
-                Preparé esta noche pensando en ti: nos veremos el 16 para
-                celebrar juntos, un día antes de tu cumpleaños el 17.
+                Quiero empezar a celebrar tu cumpleaños contigo, en una noche
+                preparada especialmente para los dos.
               </p>
+            </div>
+
+            <div className="reservation__event">
+              <div
+                className="reservation__date"
+                aria-label="Miércoles 16 de septiembre de 2026"
+              >
+                <span>Miércoles</span>
+                <strong>16</strong>
+                <span>Septiembre · 2026</span>
+                <small>Tu cumpleaños es el jueves 17</small>
+              </div>
+
               <dl className="reservation__facts">
-                <div>
-                  <dt>
-                    <CalendarDays size={18} /> Fecha
-                  </dt>
-                  <dd>Miércoles, 16 de septiembre de 2026</dd>
-                </div>
                 <div>
                   <dt>
                     <Clock3 size={18} /> Hora
@@ -319,9 +334,9 @@ export default function Home() {
                 </div>
                 <div>
                   <dt>
-                    <Users size={18} /> Reserva
+                    <Users size={18} /> Para
                   </dt>
-                  <dd>2 personas</dd>
+                  <dd>Nosotros dos</dd>
                 </div>
                 <div>
                   <dt>
@@ -329,20 +344,23 @@ export default function Home() {
                   </dt>
                   <dd>Museo Larco Café · Restaurant</dd>
                 </div>
+                <div>
+                  <dt>
+                    <CalendarDays size={18} /> Reserva
+                  </dt>
+                  <dd>A nombre de Kleberson Paolo</dd>
+                </div>
               </dl>
             </div>
-            <figure className="reservation__proof">
-              <Image
-                src="/media/reserva.webp"
-                alt="Confirmación de reserva para Kleberson en Museo Larco Café Restaurant"
-                fill
-                sizes="(max-width: 980px) 100vw, 42vw"
-                loading="lazy"
-              />
-              <figcaption>
-                Reserva confirmada a nombre de Kleberson Paolo
-              </figcaption>
-            </figure>
+
+            <div className="reservation__closing">
+              <span aria-hidden="true">✦</span>
+              <p>
+                Guarda esta noche para nosotros.
+                <strong>— Kleberson</strong>
+              </p>
+              <span aria-hidden="true">✦</span>
+            </div>
           </div>
         </div>
       </section>
