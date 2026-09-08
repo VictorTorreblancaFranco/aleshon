@@ -104,6 +104,42 @@ video {
   max-width: 100%;
 }
 
+.background-audio {
+  display: none;
+}
+
+.background-music {
+  position: fixed;
+  z-index: 50;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  color: rgba(247, 244, 255, 0.68);
+  background: rgba(10, 10, 24, 0.72);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(16px);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.background-music:hover,
+.background-music.is-playing {
+  border-color: rgba(87, 201, 255, 0.42);
+  color: var(--paper);
+  background: rgba(25, 24, 56, 0.84);
+}
+
 .hero {
   position: relative;
   min-height: 100svh;
@@ -440,11 +476,13 @@ h1 span {
   filter: blur(16px);
 }
 
-.video-story__grid {
+.video-story__layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(320px, 0.62fr);
-  gap: clamp(3rem, 8vw, 8rem);
-  align-items: center;
+  gap: clamp(3rem, 6vw, 5rem);
+}
+
+.video-copy {
+  max-width: 790px;
 }
 
 .video-copy > p:not(.eyebrow) {
@@ -465,10 +503,32 @@ h1 span {
   font-weight: 700;
 }
 
+.video-reel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.video-card {
+  min-width: 0;
+  margin: 0;
+}
+
+.video-card figcaption {
+  margin-top: 1rem;
+  color: rgba(247, 244, 255, 0.52);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .video-frame {
   position: relative;
-  width: min(100%, 430px);
-  justify-self: end;
+  width: 100%;
   padding: 0.7rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 2rem;
@@ -477,24 +537,21 @@ h1 span {
 }
 
 .video-frame::before {
-  content: 'RECUERDO  ·  2026';
   position: absolute;
-  top: 1.55rem;
-  left: -2.65rem;
-  z-index: 2;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.58rem;
-  font-weight: 800;
-  letter-spacing: 0.25em;
-  transform: rotate(-90deg);
+  z-index: -1;
+  inset: 8% -8% -7% 12%;
+  border-radius: inherit;
+  background: rgba(124, 92, 255, 0.14);
+  filter: blur(28px);
+  content: '';
 }
 
 .video-frame video {
   width: 100%;
-  max-height: 76svh;
+  aspect-ratio: 3 / 4;
   border-radius: 1.45rem;
   background: #05050a;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .soundtrack__heading {
@@ -912,9 +969,13 @@ footer span {
     margin: 0 auto;
     grid-column: 1 / -1;
   }
-  .video-story__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.7fr);
-    gap: 3.5rem;
+  .video-reel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .video-card:last-child {
+    width: calc(50% - 0.5rem);
+    grid-column: 1 / -1;
+    justify-self: center;
   }
   .music-panel {
     grid-template-columns: auto minmax(0, 1fr);
@@ -968,10 +1029,14 @@ footer span {
   .flip-card {
     min-height: min(142vw, 650px);
   }
-  .video-story__grid {
+  .video-reel {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
-  .video-frame {
+  .video-card,
+  .video-card:last-child {
+    width: min(100%, 430px);
+    grid-column: auto;
     justify-self: center;
   }
   .music-tabs__list {
@@ -1057,6 +1122,20 @@ footer span {
   }
   .video-frame video {
     border-radius: 1.1rem;
+  }
+  .background-music {
+    width: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+  .background-music span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
   }
   .reservation__card {
     padding: 0.8rem;

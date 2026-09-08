@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
   CalendarDays,
@@ -13,6 +13,8 @@ import {
   RotateCcw,
   Sparkles,
   Users,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -71,6 +73,25 @@ const songs = [
   },
 ];
 
+const videoMemories = [
+  {
+    src: '/media/nuestro-recuerdo.mp4',
+    poster: '/media/video-portada.webp',
+    label: 'Recuerdo 01',
+  },
+  {
+    src: '/media/recuerdo-02.mp4',
+    label: 'Recuerdo 02',
+  },
+  {
+    src: '/media/recuerdo-03.mp4',
+    label: 'Recuerdo 03',
+  },
+];
+
+const backgroundTrack =
+  'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/aa/6b/11/aa6b11c5-c0e8-f787-bbf2-54f7be0b3d46/mzaf_15030960305960074183.plus.aac.p.m4a';
+
 type Memory = (typeof memories)[number];
 
 function FlipCard({ memory, index }: { memory: Memory; index: number }) {
@@ -119,9 +140,93 @@ function FlipCard({ memory, index }: { memory: Memory; index: number }) {
 
 export default function Home() {
   const [reservationOpen, setReservationOpen] = useState(false);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const musicPausedByVisitor = useRef(false);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.volume = 0.24;
+
+    const startMusic = () => {
+      void audio.play().catch(() => {
+        // Los navegadores móviles esperan el primer gesto del visitante.
+      });
+    };
+
+    const unlockMusic = (event: Event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest('.background-music')) {
+        return;
+      }
+
+      if (!musicPausedByVisitor.current) startMusic();
+    };
+
+    startMusic();
+    window.addEventListener('pointerdown', unlockMusic);
+    window.addEventListener('keydown', unlockMusic);
+
+    return () => {
+      window.removeEventListener('pointerdown', unlockMusic);
+      window.removeEventListener('keydown', unlockMusic);
+    };
+  }, []);
+
+  const toggleBackgroundMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      musicPausedByVisitor.current = false;
+      void audio.play().catch(() => undefined);
+    } else {
+      musicPausedByVisitor.current = true;
+      audio.pause();
+    }
+  };
+
+  const pauseBackgroundForVideo = () => {
+    musicPausedByVisitor.current = true;
+    audioRef.current?.pause();
+  };
 
   return (
     <main>
+      <audio
+        ref={audioRef}
+        className="background-audio"
+        src={backgroundTrack}
+        autoPlay
+        loop
+        preload="auto"
+        onPlay={() => setMusicPlaying(true)}
+        onPause={() => setMusicPlaying(false)}
+      >
+        <track
+          kind="captions"
+          src="/media/video-es.vtt"
+          srcLang="es"
+          label="Español"
+        />
+      </audio>
+      <button
+        type="button"
+        className={`background-music ${musicPlaying ? 'is-playing' : ''}`}
+        onClick={toggleBackgroundMusic}
+        aria-label={
+          musicPlaying
+            ? 'Pausar Bésame sin sentir de Micro TDH'
+            : 'Reproducir Bésame sin sentir de Micro TDH'
+        }
+        title="Bésame sin sentir · Micro TDH"
+      >
+        {musicPlaying ? <Volume2 size={17} /> : <VolumeX size={17} />}
+        <span>Bésame sin sentir</span>
+      </button>
+
       <section className="hero" aria-labelledby="album-title">
         <div className="hero__glow hero__glow--one" />
         <div className="hero__glow hero__glow--two" />
@@ -170,37 +275,46 @@ export default function Home() {
       </section>
 
       <section className="video-story" aria-labelledby="video-title">
-        <div className="section-shell video-story__grid">
+        <div className="section-shell video-story__layout">
           <div className="video-copy">
             <p className="eyebrow">02 · En movimiento</p>
             <h2 id="video-title">
               Hay instantes que una foto no alcanza a contar.
             </h2>
             <p>
-              Este es uno de ellos: un pedacito de ustedes que todavía se mueve,
-              suena y vuelve a sentirse.
+              Aquí guardé tres de ellos: pedacitos de nosotros que todavía se
+              mueven, suenan y vuelven a sentirse.
             </p>
             <span className="video-copy__note">
-              <Heart size={16} fill="currentColor" /> Un recuerdo para volver a
-              mirar
+              <Heart size={16} fill="currentColor" /> Tres recuerdos para volver
+              a mirar
             </span>
           </div>
-          <div className="video-frame">
-            <video
-              controls
-              playsInline
-              preload="metadata"
-              poster="/media/video-portada.webp"
-            >
-              <source src="/media/nuestro-recuerdo.mp4" type="video/mp4" />
-              <track
-                kind="captions"
-                src="/media/video-es.vtt"
-                srcLang="es"
-                label="Español"
-              />
-              Tu navegador no puede reproducir este video.
-            </video>
+
+          <div className="video-reel">
+            {videoMemories.map((memory) => (
+              <figure className="video-card" key={memory.src}>
+                <div className="video-frame">
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster={memory.poster}
+                    onPlay={pauseBackgroundForVideo}
+                  >
+                    <source src={memory.src} type="video/mp4" />
+                    <track
+                      kind="captions"
+                      src="/media/video-es.vtt"
+                      srcLang="es"
+                      label="Español"
+                    />
+                    Tu navegador no puede reproducir este video.
+                  </video>
+                </div>
+                <figcaption>{memory.label}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>
@@ -271,7 +385,7 @@ export default function Home() {
             <br />
             reservada para ti.
           </h2>
-          <p>Una celebración anticipada, un día antes de tu cumpleaños.</p>
+          <p>Una noche preparada especialmente para nosotros.</p>
           <Button
             type="button"
             size="lg"
@@ -322,7 +436,7 @@ export default function Home() {
                 <span>Miércoles</span>
                 <strong>16</strong>
                 <span>Septiembre · 2026</span>
-                <small>Tu cumpleaños es el jueves 17</small>
+                <small>Una noche reservada para nosotros</small>
               </div>
 
               <dl className="reservation__facts">
