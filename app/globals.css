@@ -567,7 +567,7 @@ h1 span {
   height: 56px !important;
   min-height: 56px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0;
   padding: 0;
   overflow: visible;
@@ -1040,7 +1040,7 @@ footer span {
     justify-self: center;
   }
   .music-tabs__list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .music-tabs__list [data-slot='tabs-trigger'] {
     padding-inline: 0.4rem;

@@ -71,6 +71,15 @@ const songs = [
     note: 'Una de esas canciones que nos gusta a los dos y que ya suena un poco a nosotros.',
     tab: 'La nuestra',
   },
+  {
+    id: 'amoureux',
+    number: '04',
+    title: 'amoureux',
+    artist: 'Alleh',
+    spotifyId: '172YRaBrecw8yp15qJhnzd',
+    note: 'Esta es para ti, Aleshna: una canción que quiero dedicarte y guardar entre nuestros recuerdos.',
+    tab: 'Para ti',
+  },
 ];
 
 const videoMemories = [
@@ -90,7 +99,7 @@ const videoMemories = [
 ];
 
 const backgroundTrack =
-  'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/aa/6b/11/aa6b11c5-c0e8-f787-bbf2-54f7be0b3d46/mzaf_15030960305960074183.plus.aac.p.m4a';
+  'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d5/d3/5d/d5d35d88-4ad0-fdc2-4fbe-564481ffeb62/mzaf_2789341400711811896.plus.aac.p.m4a';
 
 type Memory = (typeof memories)[number];
 
@@ -218,13 +227,13 @@ export default function Home() {
         onClick={toggleBackgroundMusic}
         aria-label={
           musicPlaying
-            ? 'Pausar Bésame sin sentir de Micro TDH'
-            : 'Reproducir Bésame sin sentir de Micro TDH'
+            ? 'Pausar One Less Lonely Girl de Justin Bieber'
+            : 'Reproducir One Less Lonely Girl de Justin Bieber'
         }
-        title="Bésame sin sentir · Micro TDH"
+        title="One Less Lonely Girl · Justin Bieber"
       >
         {musicPlaying ? <Volume2 size={17} /> : <VolumeX size={17} />}
-        <span>Bésame sin sentir</span>
+        <span>One Less Lonely Girl</span>
       </button>
 
       <section className="hero" aria-labelledby="album-title">
@@ -328,9 +337,9 @@ export default function Home() {
             <Music2 size={15} /> 03 · Nuestra banda sonora
           </p>
           <h2 id="soundtrack-title">
-            Tres canciones.
+            Cuatro canciones.
             <br />
-            Tres formas de recordarnos.
+            Cuatro formas de recordarnos.
           </h2>
         </div>
 
